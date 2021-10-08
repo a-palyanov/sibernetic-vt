@@ -1,0 +1,1 @@
+This is a "Special Edition" of Sibernetic software (https://github.com/openworm/sibernetic) aimed at simulation of "virtual tadpole" - X. laevis tadpole 3D biomechanical body model able to swim in water simulated by prediction-correction incompressible smoothed particle hydrodynamics (PCISPH).
