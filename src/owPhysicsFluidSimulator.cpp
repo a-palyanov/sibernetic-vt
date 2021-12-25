@@ -126,7 +126,7 @@ owPhysicsFluidSimulator::owPhysicsFluidSimulator(owHelper * helper,int argc, cha
 			muscle_activation_signal_cpp[i] = 0.f;
 		}
 
-	std::ifstream tadpole_mnrn_activity_file ("muscle_activity_data/mns_data-49.m", std::ios_base::binary);
+	std::ifstream tadpole_mnrn_activity_file ("muscle_activity_data/spk_mns_data-49.m", std::ios_base::binary);
 
 	float min_time = 1000;
 
