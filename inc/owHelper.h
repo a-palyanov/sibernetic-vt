@@ -61,8 +61,8 @@ public:
 	static void loadConfigurationToFile(float * position, owConfigProperty * config, std::vector<int> & filter, float * connections=NULL, int * membranes=NULL, bool firstIteration = true);
 	static void loadConfigurationFromFile(float *& position, float *& connections, int *& membranes, int iteration = 0);
 	static void loadConfigurationFromFile(float *& position, float *& connections, int *& membranes, owConfigProperty * config,int iteration = 0);
-	static void loadConfigurationFromFile(float *& position, float *& velocity,float *& connections, int *& membranes, int *& particleMemIndex, owConfigProperty * config);
-	static void loadConfigurationToFile(float * position, float * velocity, float * connections, int * membranes, int * particleMemIndex, const char * filename, owConfigProperty * config);
+	static void loadConfigurationFromFile(float *& position, float *& velocity,float *& connections, int *& membranes, int *& particleMemindex, owConfigProperty * config);
+	static void loadConfigurationToFile(float * position, float * velocity, float * connections, int * membranes, int * particleMemindex, const char * filename, owConfigProperty * config);
 	void watch_report(const char *str);
 	double get_elapsedTime() { return elapsedTime; };
 	void refreshTime();

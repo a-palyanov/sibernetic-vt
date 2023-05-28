@@ -185,7 +185,7 @@ owPhysicsFluidSimulator::owPhysicsFluidSimulator(owHelper * helper,int argc, cha
 					{
 						spike_time[mnrn_n][tn] = mnrn_f;
 						tn++;
-						min_time = min(min_time,mnrn_f);
+						min_time = std::min(min_time,mnrn_f);
 					}
 					if((result=mnrn_s.find("];"))>=0) 
 					{
@@ -674,8 +674,8 @@ double owPhysicsFluidSimulator::simulationStep(const bool load_to)
 		/**/
 		for(m_i=1;m_i<45;m_i++)
 		{
-			muscle_activation_signal_cpp[	m_i] = min(muscle_activation_signal_cpp[   m_i]*0.930f/*355f*/, 1.f); // R
-			muscle_activation_signal_cpp[50+m_i] = min(muscle_activation_signal_cpp[50+m_i]*1.0f, 1.f); // L
+			muscle_activation_signal_cpp[	m_i] = std::min(muscle_activation_signal_cpp[   m_i]*0.930f/*355f*/, 1.f); // R
+			muscle_activation_signal_cpp[50+m_i] = std::min(muscle_activation_signal_cpp[50+m_i]*1.0f, 1.f); // L
 		}
 
 

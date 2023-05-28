@@ -875,10 +875,10 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 
 						if(stage==0)
 						{
-							config->tadpole_y_min = min(y, config->tadpole_y_min);
-							config->tadpole_y_max = max(y, config->tadpole_y_max);
-							config->tadpole_z_min = min(z, config->tadpole_z_min);
-							config->tadpole_z_max = max(z, config->tadpole_z_max);
+							config->tadpole_y_min = std::min(y, config->tadpole_y_min);
+							config->tadpole_y_max = std::max(y, config->tadpole_y_max);
+							config->tadpole_z_min = std::min(z, config->tadpole_z_min);
+							config->tadpole_z_max = std::max(z, config->tadpole_z_max);
 						}
 						else
 						if(stage==1) //simple tadpole coloring
@@ -894,9 +894,9 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 							int pixel_cnt = 0;
 							int tc_r = 0, tc_g = 0, tc_b = 0;
 
-							for(img_z = (int)(max(z_bmp - c_bmp*0.5f,0)); img_z < (int)(min(z_bmp + c_bmp*0.5f,img_w-1)); img_z++)
+							for(img_z = (int)(std::max(z_bmp - c_bmp*0.5f,0.f)); img_z < (int)(std::min(z_bmp + c_bmp*0.5f,(float)(img_w-1))); img_z++)
 							{
-								for(img_y = (int)(max(y_bmp - c_bmp*0.5f+6,0)); img_y < (int)(min(y_bmp + c_bmp*0.5f+6,img_h-1)); img_y++)
+								for(img_y = (int)(std::max(y_bmp - c_bmp*0.5f+6,0.f)); img_y < (int)(std::min(y_bmp + c_bmp*0.5f+6,(float)(img_h-1))); img_y++)
 								{
 									tc_r += img_data[img_y*img_w*3 + img_z*3+0];
 									tc_g += img_data[img_y*img_w*3 + img_z*3+1];
@@ -994,9 +994,9 @@ int generateLiquid(int stage, int i_start,float *position_cpp, float *velocity_c
 	{
 		for(i=0;i<numOfElasticP;i++)
 		{
-			tadpole_xmin = min( tadpole_xmin, position_cpp[ 4 * i + 0 ] ); tadpole_xmax = max( tadpole_xmax, position_cpp[ 4 * i + 0 ] );
-			tadpole_ymin = min( tadpole_ymin, position_cpp[ 4 * i + 1 ] ); tadpole_ymax = max( tadpole_ymax, position_cpp[ 4 * i + 1 ] );
-			tadpole_zmin = min( tadpole_zmin, position_cpp[ 4 * i + 2 ] ); tadpole_zmax = max( tadpole_zmax, position_cpp[ 4 * i + 2 ] );
+			tadpole_xmin = std::min(tadpole_xmin, position_cpp[ 4 * i + 0 ] ); tadpole_xmax = std::max( tadpole_xmax, position_cpp[ 4 * i + 0 ] );
+			tadpole_ymin = std::min(tadpole_ymin, position_cpp[ 4 * i + 1 ] ); tadpole_ymax = std::max( tadpole_ymax, position_cpp[ 4 * i + 1 ] );
+			tadpole_zmin = std::min(tadpole_zmin, position_cpp[ 4 * i + 2 ] ); tadpole_zmax = std::max( tadpole_zmax, position_cpp[ 4 * i + 2 ] );
 		}
 
 		for(x= 1.3f*r0 + 0*35*r0, xcnt = 0; x<config->xmax - 0*35*r0 - 1.3f*r0; x+=r0s*2.f*sqrt2d3, xcnt++)	
@@ -1017,7 +1017,7 @@ int generateLiquid(int stage, int i_start,float *position_cpp, float *velocity_c
 								+ (position_cpp[ 4 * i + 1 ] - y)*(position_cpp[ 4 * i + 1 ] - y)
 								+ (position_cpp[ 4 * i + 2 ] - z)*(position_cpp[ 4 * i + 2 ] - z);
 
-							min_dr2 = min(dr2,min_dr2);
+							min_dr2 = std::min(dr2,min_dr2);
 
 							if(dr2<dr02*1) 
 							{
@@ -1495,7 +1495,7 @@ void owHelper::generateConfiguration(int stage, float *position_cpp, float *velo
 							&& (position_cpp[4*i+0]==position_cpp[4*j+0]) // x
 							&& (position_cpp[4*i+1]==position_cpp[4*j+1]))//y
 						{
-							m_index_i = max(m_index_i,m_index_j);
+							m_index_i = std::max(m_index_i,m_index_j);
 							elasticConnectionsData_cpp[ 4 * ( MAX_NEIGHBOR_COUNT * i + ecc  ) + 2 ] = m_index_i;// + 0*((m_index_i)%2+2)/10.f; //mus_clr[mus_num]/10.f;
 						}
 

@@ -350,16 +350,16 @@ void display(void)
 			if( ((int)p_cpp[i * 4 + 3]) == LIQUID_PARTICLE )
 			{
 			abs_v = 500.f/*500.f*/*sqrt(v_cpp[i*4+0]*v_cpp[i*4+0] + v_cpp[i*4+1]*v_cpp[i*4+1] + v_cpp[i*4+2]*v_cpp[i*4+2]);
-			max_abs_v = max(max_abs_v,abs_v);
+			max_abs_v = std::max(max_abs_v,abs_v);
 			}
 			// 0, 0.4, 1.0, 0.5
 			/*
 			if( abs_v <  1.0f )	glColor4f(   0,  0,						1, 0.2f);//blue
-			if( abs_v >= 1.0f )	glColor4f(   0,  max(abs_v-1,0.f),		1, 0.2f);//cyan
-			if( abs_v >= 2.0f )	glColor4f(   0,   1, 1-max(abs_v-2.f,0.f), 0.2f);//green
-			if( abs_v >= 3.0f )	glColor4f(  max(abs_v-3.f,0.f),    1,   0, 0.2f);//yellow
-			if( abs_v >= 4.0f )	glColor4f(   1, 1-max(abs_v-4.f,0.f),   0, 0.2f);//red
-			if( abs_v >= 5.0f )	glColor4f(   1-max(abs_v-5.f,0.f), 0,   0, 0.2f);//red
+			if( abs_v >= 1.0f )	glColor4f(   0,  std::maxabs_v-1,0.f),		1, 0.2f);//cyan
+			if( abs_v >= 2.0f )	glColor4f(   0,   1, 1-std::maxabs_v-2.f,0.f), 0.2f);//green
+			if( abs_v >= 3.0f )	glColor4f(  std::maxabs_v-3.f,0.f),    1,   0, 0.2f);//yellow
+			if( abs_v >= 4.0f )	glColor4f(   1, 1-std::maxabs_v-4.f,0.f),   0, 0.2f);//red
+			if( abs_v >= 5.0f )	glColor4f(   1-std::maxabs_v-5.f,0.f), 0,   0, 0.2f);//red
 			if( abs_v >= 5.7f )	glColor4f(   0.3,				   0,   0, 0.2f);//red
 			*/
 
@@ -377,13 +377,13 @@ void display(void)
 						&&(p_cpp[i*4+1]>r0*2.f)&&(p_cpp[i*4+1]<localConfig->ymax-r0*2.f)
 						&&(p_cpp[i*4+2]>r0*2.f)&&(p_cpp[i*4+2]<localConfig->zmax-r0*2.f))/**/
 					{
-							vel_matrix[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min((35+10)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] += abs_v; 
-						vel_matrix_cnt[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min((35+10)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] ++;
+							vel_matrix[std::min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][std::min((35+10)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] += abs_v; 
+						vel_matrix_cnt[std::min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][std::min((35+10)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] ++;
 					}
 					else
 					{
-							vel_matrix[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min((35+10)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] += 0; 
-						vel_matrix_cnt[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min((35+10)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] ++;
+							vel_matrix[std::min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][std::min((35+10)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] += 0; 
+						vel_matrix_cnt[std::min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][std::min((35+10)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] ++;
 					}
 				}
 
@@ -393,13 +393,13 @@ void display(void)
 						&&(p_cpp[i*4+1]>r0*2.f)&&(p_cpp[i*4+1]<localConfig->ymax-r0*2.f)
 						&&(p_cpp[i*4+2]>r0*2.f)&&(p_cpp[i*4+2]<localConfig->zmax-r0*2.f))
 					{
-							vel_matrix[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min(35*5-1,(int)(p_cpp[i*4+1]*5.f/h))] += abs_v;
-						vel_matrix_cnt[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min(35*5-1,(int)(p_cpp[i*4+1]*5.f/h))] ++;
+							vel_matrix[std::min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][std::min(35*5-1,(int)(p_cpp[i*4+1]*5.f/h))] += abs_v;
+						vel_matrix_cnt[std::min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][std::min(35*5-1,(int)(p_cpp[i*4+1]*5.f/h))] ++;
 					}
 					else
 					{
-							vel_matrix[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min(35*5-1,(int)(p_cpp[i*4+1]*5.f/h))] += 0;
-						vel_matrix_cnt[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min(35*5-1,(int)(p_cpp[i*4+1]*5.f/h))] ++;
+							vel_matrix[std::min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][std::min(35*5-1,(int)(p_cpp[i*4+1]*5.f/h))] += 0;
+						vel_matrix_cnt[std::min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][std::min(35*5-1,(int)(p_cpp[i*4+1]*5.f/h))] ++;
 					}
 				}
 			}
@@ -409,7 +409,7 @@ void display(void)
 				glColor4f(   0,  0,   1, 0.2f);//blue
 			}
 
-			//glColor4f( (abs_v>1)*min(1.f,abs_v-1.f),  min(1.f,abs_v),  1-(abs_v>1)*min(1.f,abs_v-1.f), 0.5f/*0.5f/*0.3f /*0.1f*/);//blue
+			//glColor4f( (abs_v>1)*std::min1.f,abs_v-1.f),  std::min1.f,abs_v),  1-(abs_v>1)*std::min1.f,abs_v-1.f), 0.5f/*0.5f/*0.3f /*0.1f*/);//blue
 			//display liquid particles, blue
 
 			if(!load_from_file){
@@ -506,7 +506,7 @@ void display(void)
 			/**/
 
 			/*
-			не работает
+			пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			int i_ec = i*MAX_NEIGHBOR_COUNT;
 			if( ec_cpp[ 4 * i_ec + 2 ] >= 1.f )//muscles
 			{
@@ -574,16 +574,16 @@ void display(void)
 
 						//muscle_activation_signal_cpp[ muscle_index ] = (rand()%100)/100.f;
 
-						m_clr = min(1.f,muscle_activation_signal_cpp[ muscle_index ]);
+						m_clr = std::min(1.f,muscle_activation_signal_cpp[ muscle_index ]);
 						//glColor3ub( 255, (int)(255.f*(1.f-m_clr)),   0);//yellow-red
 						//glDisable(GL_BLEND);
-						glColor4ub(	(GLubyte)(min(255, localConfig->tadpole_color_r[i]+50+m_clr*(255-localConfig->tadpole_color_r[i]))), 
-									(GLubyte)(min(255, localConfig->tadpole_color_g[i]*(1-m_clr)+50+0.f*m_clr*(255-localConfig->tadpole_color_g[i]))),
-									(GLubyte)(min(255, localConfig->tadpole_color_b[i]*(1-m_clr))), (GLubyte)((90+m_clr*160)) ); 
+						glColor4ub(	(GLubyte)(std::min(255.f, localConfig->tadpole_color_r[i]+50+m_clr*(255-localConfig->tadpole_color_r[i]))), 
+									(GLubyte)(std::min(255.f, localConfig->tadpole_color_g[i]*(1-m_clr)+50+0.f*m_clr*(255-localConfig->tadpole_color_g[i]))),
+									(GLubyte)(std::min(255.f, localConfig->tadpole_color_b[i]*(1-m_clr))), (GLubyte)((90+m_clr*160)) ); 
 						if((muscle_index==1)||(muscle_index==51))
-						glColor4ub(	(GLubyte)(min(255, 206*0.8+50+m_clr*(255-206*0.8))), 
-									(GLubyte)(min(255, 200*0.8*(1-m_clr) + 50+0*(255-200*0.8))),
-									(GLubyte)(min(255, 170*0.8*(1-m_clr))), (GLubyte)(90+m_clr*160)); 
+						glColor4ub(	(GLubyte)(std::min(255.0, 206*0.8+50+m_clr*(255-206*0.8))), 
+									(GLubyte)(std::min(255.0, 200*0.8*(1-m_clr) + 50+0*(255-200*0.8))),
+									(GLubyte)(std::min(255.0, 170*0.8*(1-m_clr))), (GLubyte)(90+m_clr*160)); 
 
 						//glColor4ub( 255*m_clr, 150, 150, 55*m_clr);
 
@@ -591,13 +591,13 @@ void display(void)
 						/*
 						if(view_type == 0) // for non-transpanent tadpole
 						{
-							glColor3ub(	min(255, localConfig->tadpole_color_r[i]+50+m_clr*(255-localConfig->tadpole_color_r[i])), 
-										min(255, localConfig->tadpole_color_g[i]*(1-m_clr)+50+0.f*m_clr*(255-localConfig->tadpole_color_g[i])),
-										min(255, localConfig->tadpole_color_b[i]*(1-m_clr)) ); 
+							glColor3ub(	std::min255, localConfig->tadpole_color_r[i]+50+m_clr*(255-localConfig->tadpole_color_r[i])), 
+										std::min255, localConfig->tadpole_color_g[i]*(1-m_clr)+50+0.f*m_clr*(255-localConfig->tadpole_color_g[i])),
+										std::min255, localConfig->tadpole_color_b[i]*(1-m_clr)) ); 
 							if((muscle_index==1)||(muscle_index==51))
-							glColor3ub(	min(255, 206*0.8+50+m_clr*(255-206*0.8)), 
-										min(255, 200*0.8*(1-m_clr)+50+0*(255-200*0.8)),
-										min(255, 170*0.8*(1-m_clr)));
+							glColor3ub(	std::min255, 206*0.8+50+m_clr*(255-206*0.8)), 
+										std::min255, 200*0.8*(1-m_clr)+50+0*(255-200*0.8)),
+										std::min255, 170*0.8*(1-m_clr)));
 						}*/
 
 						//glEnable(GL_BLEND);
@@ -611,16 +611,16 @@ void display(void)
 								( ( muscle_index < 25 ) || (( muscle_index >= 51 )&&( muscle_index < 75 )) ) )
 							{
 								//glColor3ub( 155+38*0, 155+38*0, 55-38*0); // brown on yellow
-								glColor4ub(	(GLubyte)(min(255, localConfig->tadpole_color_r[i]*0.7f)), 
-											(GLubyte)(min(255, localConfig->tadpole_color_g[i]*0.7f)),
-											(GLubyte)(min(255, localConfig->tadpole_color_b[i]*0.7f)), (GLubyte)(30+m_clr*220) ); 
+								glColor4ub(	(GLubyte)(std::min(255.f, localConfig->tadpole_color_r[i]*0.7f)), 
+											(GLubyte)(std::min(255.f, localConfig->tadpole_color_g[i]*0.7f)),
+											(GLubyte)(std::min(255.f, localConfig->tadpole_color_b[i]*0.7f)), (GLubyte)(30+m_clr*220) ); 
 
 								/*
 								if(view_type == 0) // for non-transparency
 								{
-									glColor3ub(	min(255, localConfig->tadpole_color_r[i]*0.7f), 
-												min(255, localConfig->tadpole_color_g[i]*0.7f),
-												min(255, localConfig->tadpole_color_b[i]*0.7f)); 
+									glColor3ub(	std::min255, localConfig->tadpole_color_r[i]*0.7f), 
+												std::min255, localConfig->tadpole_color_g[i]*0.7f),
+												std::min255, localConfig->tadpole_color_b[i]*0.7f)); 
 									//glColor4ub( 255*m_clr*0.7, 150*0.7, 150*0.7, 55*m_clr);
 								}*/
 
@@ -762,11 +762,11 @@ void display(void)
 			
 			
 			if( abs_v <  1.0f )	glColor4f(   0,  0.8f,					1, 0.35f);//blue
-			if( abs_v >= 1.0f )	glColor4f(   0,  max(abs_v-1.f,0.8f),		1, 0.35f);//cyan
-			if( abs_v >= 2.0f )	glColor4f(   0,   1, 1-max(abs_v-2.f,0.f), 0.35f);//green
-			if( abs_v >= 3.0f )	glColor4f(  max(abs_v-3.f,0.f),    1,   0, 0.35f);//yellow
-			if( abs_v >= 4.0f )	glColor4f(   1, 1-max(abs_v-4.f,0.f),   0, 0.35f);//red
-			//if( abs_v >= 5.0f )	glColor4f(   1-max(abs_v-5.f,0.f), 0,   0, 0.15f);//red
+			if( abs_v >= 1.0f )	glColor4f(   0,  std::max(abs_v-1.f,0.8f),		1, 0.35f);//cyan
+			if( abs_v >= 2.0f )	glColor4f(   0,   1, 1-std::max(abs_v-2.f,0.f), 0.35f);//green
+			if( abs_v >= 3.0f )	glColor4f(  std::max(abs_v-3.f,0.f),    1,   0, 0.35f);//yellow
+			if( abs_v >= 4.0f )	glColor4f(   1, 1-std::max(abs_v-4.f,0.f),   0, 0.35f);//red
+			//if( abs_v >= 5.0f )	glColor4f(   1-std::maxabs_v-5.f,0.f), 0,   0, 0.15f);//red
 			if( abs_v >= 5.0f )	glColor4f(   1.0,				   0,   0, 0.35f);//red*/
 
 			abs_v += 1.25f;
@@ -775,7 +775,7 @@ void display(void)
 		//	if( abs_v <  1.0f )	glColor4f(   0,  1.f,					1, 0.35f);//blue
 		//	if( abs_v >= 1.0f )
 		//	if( abs_v <  0.2f )	glColor4f(   0,  0.8f,					1, 0.35f);//blue
-		//	else glColor4f( min(abs_v-0.2f,1.f),  max(0.8f - (abs_v-0.2f)/2.f,0),		1, 0.35f);
+		//	else glColor4f( std::minabs_v-0.2f,1.f),  std::max0.8f - (abs_v-0.2f)/2.f,0),		1, 0.35f);
 
 			//glBegin(GL_TRIANGLES);
 			if((view_type==0)/*&&(filled_cell>0)*/)
@@ -798,7 +798,7 @@ void display(void)
 				//printf("%d",n_filled_cells);
 				glColor4f(   0,  0.8f,	1, 0.35f);//blue
 			//	if( abs_v <  0.2f )	glColor4f(   0,  0.8f,					1, 0.35f);//blue
-			//	else glColor4f( min(abs_v-0.2f,1.f),  max(0.8f - (abs_v-0.2f)/2.f,0),		1, 0.35f);
+			//	else glColor4f( std::minabs_v-0.2f,1.f),  std::max0.8f - (abs_v-0.2f)/2.f,0),		1, 0.35f);
 				/*if( abs_v <  1.0f )	glColor4f(   0,  1.f,					1, 0.35f);//blue
 				if( abs_v >= 1.0f )	*/
 			//	glColor4f(   0,  0.8,	1, 0.35f);//blue
@@ -1037,7 +1037,7 @@ void display(void)
 					p = Vector3D((p_cpp[j*4+0]-localConfig->xmax/2)*sc , (p_cpp[j*4+1]-localConfig->ymax/2)*sc, (p_cpp[j*4+2]-localConfig->zmax/2)*sc) - 
 					    Vector3D((p_cpp[i*4+0]-localConfig->xmax/2)*sc , (p_cpp[i*4+1]-localConfig->ymax/2)*sc, (p_cpp[i*4+2]-localConfig->zmax/2)*sc);
 
-					m_clr = min(1.f,muscle_activation_signal_cpp[ (int)(floor( ec_cpp[4*i_ec+2]))]);
+					m_clr = std::min(1.f,muscle_activation_signal_cpp[ (int)(floor( ec_cpp[4*i_ec+2]))]);
 					glColor4b( 255/2, (int)(255.f*(1.f-m_clr)/2.f),   0, 255/2 );//yellow-red
 					//glColor4b( 255/2, 255/2, 0, 255/2);
 					/*
