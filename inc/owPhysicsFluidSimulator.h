@@ -52,7 +52,7 @@ public:
 	 *  @return position_cpp
 	 */
 	float * getPosition_cpp() const { return position_cpp; };
-	/** Getter for velocity_cpp buffer
+	/** Getter for position_cpp buffer
 	 *
 	 *  When run this method information about new value of velocity
 	 *  getting from OpenCL memory
@@ -65,6 +65,14 @@ public:
 		ocl_solver->read_velocity_buffer(velocity_cpp,config); 
 		return velocity_cpp; 
 	};
+
+	/*
+	float * getAcceleration_cpp() 
+	{ 
+		ocl_solver->read_acceleration_buffer(acceleration_cpp,config); 
+		return acceleration_cpp; 
+	};*/
+
 	/** Getter for density_cpp buffer
 	 *
 	 *  When run this method information about new values of density
@@ -116,6 +124,7 @@ private:
 	owOpenCLSolver * ocl_solver;
 	float * position_cpp;				// everywhere in the code %variableName%_cpp means that we create
 	float * velocity_cpp;				// and initialize in 'ordinary' memory some data, which will be
+	//float * acceleration_cpp;
 	float * elasticConnectionsData_cpp; // copied later to OpenCL buffer %variableName%
 	int	  * membraneData_cpp;
 	int   * particleMembranesList_cpp;
