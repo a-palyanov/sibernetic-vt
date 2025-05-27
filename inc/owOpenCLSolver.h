@@ -96,6 +96,11 @@ public:
 	{ 
 		copy_buffer_from_device( velocity_cpp, velocity, config->getParticleCount() * sizeof( float ) * 4 ); 
 	};
+	/*
+	void read_acceleration_buffer( float * acceleration_cpp, owConfigProperty * config) 
+	{ 
+		copy_buffer_from_device( acceleration_cpp, acceleration, config->getParticleCount() * sizeof( float ) * 4 * 3 ); 
+	};*/
 	void read_density_buffer( float * density_cpp, owConfigProperty * config ) 
 	{ 
  		copy_buffer_from_device( density_cpp, rho, config->getParticleCount() * sizeof( float ) * 1 ); 

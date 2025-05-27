@@ -73,8 +73,8 @@ float * p_cpp;
 float * v_cpp;
 float * ec_cpp;
 float * muscle_activation_signal_cpp;
-float spike_pos[496];
-float spike_time[496][50];
+float spike_pos[622/*496*/];
+float spike_time[622/*496*/][50];
 int   * md_cpp;// pointer to membraneData_cpp
 owPhysicsFluidSimulator * fluid_simulation;
 owHelper * helper;
@@ -83,6 +83,7 @@ bool flag = false;
 bool sPause = false;
 void * m_font = (void *) GLUT_BITMAP_9_BY_15;//GLUT_BITMAP_8_BY_13;
 void * m_font2 = (void*) GLUT_BITMAP_TIMES_ROMAN_24;
+void * m_font3 = (void *) GLUT_BITMAP_HELVETICA_18;
 int iteration = 0;
 unsigned char* img_data = NULL;
 int img_w = 0, img_h = 0;
@@ -159,9 +160,9 @@ int myCompare2( const void * v1, const void * v2 ){
 	return 0;
 }
 
-	float   vel_matrix[(125+35+10)*5][(35+10)*5];
-	int vel_matrix_cnt[(125+35+10)*5][(35+10)*5];
-	int elast_p_index[15000*2];
+	float   vel_matrix[(125+35+10)*5][(35+10+40)*5];
+	int vel_matrix_cnt[(125+35+10)*5][(35+10+40)*5];
+	int elast_p_index[115000*2];
 
 void display(void)
 {
@@ -176,6 +177,9 @@ void display(void)
 			iteration++;
 		}else{
 			calculationTime = fluid_simulation->simulationStep(load_to); // Run one simulation step
+
+			if(fluid_simulation->getIteration()%5!=0) return;
+
 			int pib;
 			p_indexb = fluid_simulation->getParticleIndex_cpp();
 			for(i=0;i<localConfig->getParticleCount();i++)
@@ -231,10 +235,10 @@ void display(void)
 	for(int view_type = 0; view_type <=2; view_type++)
 	{
 	/**/
-		sc = 0.0063f;//0.008
-		if(view_type == 0) { glTranslatef( ( 3.3f+0.6f-0.6f)/6.f, 0.f, -0.19f ); }
-		if(view_type == 1) { glTranslatef( (-5.0f-0.27f+0.25f-0.17f)/6.f, 0.f, 0.0f ); glRotatef(-90.f, 0.f, 0.f, 1.0f ); }
-		if(view_type == 2) { glRotatef( 90.f, 0.f, 0.f, 1.0f ); glTranslatef( (1.7f-0.33f-0.25f+0.77f)/6.f, 0.f, 0.19f ); break; }
+		sc = 0.0063f/1.433f;//0.008
+		if(view_type == 0) {									glTranslatef( (-0.41 + 3.3f+0.6f-0.6f)/6.f, 0.f, -0.13f ); }
+		if(view_type == 1) {									glTranslatef( (-0.16 -5.0f-0.27f+0.25f-0.17f)/6.f, 0.f, 0.0f ); glRotatef(-90.f, 0.f, 0.f, 1.0f ); }
+		if(view_type == 2) { glRotatef( 90.f, 0.f, 0.f, 1.0f ); glTranslatef( (0.57 + 1.7f-0.33f-0.25f+0.77f)/6.f, 0.f, 0.13f ); break; }
 		//if(view_type == 1) { glTranslatef( -(3.4f-1.f)/6.f, 0.f, 0.30f ); break; }
 	/**/
 
@@ -260,7 +264,7 @@ void display(void)
 	
 	for(i=0;i<(125+35+10)*5;i++)
 	{
-		for(j=0;j<(35+10)*5;j++)
+		for(j=0;j<(35+10+40)*5;j++)
 		{
 			vel_matrix[i][j] = 0;
 			vel_matrix_cnt[i][j] = 0;
@@ -270,7 +274,7 @@ void display(void)
 
 	if(view_type==0)
 	{
-		if(fluid_simulation->getIteration() == 1 ) 
+		if(fluid_simulation->getIteration() <= 5 ) 
 		{
 			f_trajectory_log = fopen("tadpole_trajectory.txt","wt");
 			fclose(f_trajectory_log);
@@ -285,7 +289,7 @@ void display(void)
 	}*/
 	n_elast_p = 0;
 
-	for(i=0;i<15000;i++)
+	for(i=0;i<115000;i++)
 	{
 		elast_p_index[i*2+0] = -1000;
 		elast_p_index[i*2+1] = -1;
@@ -377,13 +381,13 @@ void display(void)
 						&&(p_cpp[i*4+1]>r0*2.f)&&(p_cpp[i*4+1]<localConfig->ymax-r0*2.f)
 						&&(p_cpp[i*4+2]>r0*2.f)&&(p_cpp[i*4+2]<localConfig->zmax-r0*2.f))/**/
 					{
-							vel_matrix[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min((35+10)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] += abs_v; 
-						vel_matrix_cnt[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min((35+10)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] ++;
+							vel_matrix[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min((35+10+40)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] += abs_v; 
+						vel_matrix_cnt[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min((35+10+40)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] ++;
 					}
 					else
 					{
-							vel_matrix[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min((35+10)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] += 0; 
-						vel_matrix_cnt[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min((35+10)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] ++;
+							vel_matrix[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min((35+10+40)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] += 0; 
+						vel_matrix_cnt[min((160+15)*5-1,(int)(p_cpp[i*4+2]*5.f/h))][min((35+10+40)*5-1,(int)(p_cpp[i*4+0]*5.f/h))] ++;
 					}
 				}
 
@@ -636,27 +640,38 @@ void display(void)
 						//glColor3ub( rand()%255, rand()%255, rand()%255);
 
 
-					glPushMatrix();
-					glTranslated( (p_cpp[i*4]-localConfig->xmax/2)*sc , (p_cpp[i*4+1]-localConfig->ymax/2)*sc, (p_cpp[i*4+2]-localConfig->zmax/2)*sc );
+					//
+					//
 					if(ok_to_display==1)
 					{
 						if( ((p_cpp[i*4+3]>2.329)&&(p_cpp[i*4+3]<2.331)) ) //notochord
 						{
 
-				/**/		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-				/**/		glEnable(GL_BLEND);
+						glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+						glEnable(GL_BLEND);
 							/*if(view_type==1)*/ glColor4ub( 0, 0, 0, /*100*/30);
+							glPushMatrix();
+							glTranslated( (p_cpp[i*4]-localConfig->xmax/2)*sc , (p_cpp[i*4+1]-localConfig->ymax/2)*sc, (p_cpp[i*4+2]-localConfig->zmax/2)*sc );
 							gluSphere(quadObj,1.3f*sc,6,6);
-				/**/		glDisable(GL_BLEND);
+							glPopMatrix();
+							/*glPointSize(4);
+							glBegin(GL_POINTS);
+							glVertex3f( (p_cpp[i*4]-localConfig->xmax/2)*sc , (p_cpp[i*4+1]-localConfig->ymax/2)*sc, (p_cpp[i*4+2]-localConfig->zmax/2)*sc );
+							glEnd();*/
+						glDisable(GL_BLEND);
 						}
 						else
 						if((p_cpp[i*4+3]>/*2.295*/2.305)&&(p_cpp[i*4+3]<2.315)) // mouth
 						{
-				/**/		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-				/**/		glEnable(GL_BLEND);
+						glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+						glEnable(GL_BLEND);
 							glColor4ub( 0, 0, 0, 50);
-							gluSphere(quadObj,1.3f*sc,6,6);
-				/**/		glDisable(GL_BLEND);
+							//gluSphere(quadObj,1.3f*sc,6,6);
+							glPointSize(4);
+							glBegin(GL_POINTS);
+							glVertex3f( (p_cpp[i*4]-localConfig->xmax/2)*sc , (p_cpp[i*4+1]-localConfig->ymax/2)*sc, (p_cpp[i*4+2]-localConfig->zmax/2)*sc );
+							glEnd();
+						glDisable(GL_BLEND);
 						}
 						else
 						/*if((p_cpp[i*4+3]>2.339)&&(p_cpp[i*4+3]<2.341)) // fins
@@ -667,8 +682,8 @@ void display(void)
 						else*/
 						if((p_cpp[i*4+3]>2.349)&&(p_cpp[i*4+3]<2.351)) // fins rigidity ribs
 						{
-						//	glColor3ub( 0, 0, 170);
-						//	gluSphere(quadObj,1.3f*sc,6,6);
+							//glColor3ub( 0, 0, 170);
+							//gluSphere(quadObj,1.3f*sc,6,6);
 						}
 						else
 						{
@@ -678,13 +693,16 @@ void display(void)
 							else
 								gluSphere(quadObj,0.3f*sc,6,6);*/
 								
-				/**/		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-				/**/		glEnable(GL_BLEND);
-							//glColor4f(0, 0, 1, 0.05f);
-							
-							//glutWireSphere(1.0f*sc,6,6);
-							gluSphere(quadObj,1.f*sc,6,6);
-				/**/		glDisable(GL_BLEND);
+							glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+							glEnable(GL_BLEND);
+							//gluSphere(quadObj,1.f*sc,6,6);
+							glPointSize(4);
+							glBegin(GL_POINTS);
+							glVertex3f( (p_cpp[i*4]-localConfig->xmax/2)*sc , (p_cpp[i*4+1]-localConfig->ymax/2)*sc, (p_cpp[i*4+2]-localConfig->zmax/2)*sc );
+							glEnd();
+							glDisable(GL_BLEND);
+
+
 						}
 					}
 					else 
@@ -692,7 +710,7 @@ void display(void)
 						//gluSphere(quadObj,0.3f*sc,6,6);
 						//glutWireSphere(0.2f*sc,6,6);
 					}
-					glPopMatrix();
+					//glPopMatrix();
 				}/**/
 			}
 
@@ -732,11 +750,15 @@ void display(void)
 	glVertex3d(0,0,2 + 0.5*view_type);
 	glEnd();
 
+
 	/**/
+
+	//glDisable(GL_BLEND);
+
 	//if(0==1)
 	for(i=0;i<(125+35+10)*5-1;i++)
 	{
-		for(j=0;j<(35+10*(view_type==0))*5-1;j++)
+		for(j=0;j<(35+(10+40)*(view_type==0))*5-1;j++)
 		{
 			filled_cell1 = filled_cell2 = filled_cell3 = filled_cell4 = 0;
 			abs_v = abs_v1 = abs_v2 = abs_v3 = abs_v4 = 0;
@@ -755,19 +777,19 @@ void display(void)
 				abs_v /= (float)n_filled_cells;
 			}
 
-			glColor4f(   0,  0.8f,	1, 0.35f);//blue
+			glColor3f(   0,  0.8f,	1);//blue
 
 			abs_v *= 1.20f;
 			abs_v -= 1.25f;
 			
 			
-			if( abs_v <  1.0f )	glColor4f(   0,  0.8f,					1, 0.35f);//blue
-			if( abs_v >= 1.0f )	glColor4f(   0,  max(abs_v-1.f,0.8f),		1, 0.35f);//cyan
-			if( abs_v >= 2.0f )	glColor4f(   0,   1, 1-max(abs_v-2.f,0.f), 0.35f);//green
-			if( abs_v >= 3.0f )	glColor4f(  max(abs_v-3.f,0.f),    1,   0, 0.35f);//yellow
-			if( abs_v >= 4.0f )	glColor4f(   1, 1-max(abs_v-4.f,0.f),   0, 0.35f);//red
+			if( abs_v <  1.0f )	glColor3f(   0,  0.8f,					    1);//blue
+			if( abs_v >= 1.0f )	glColor3f(   0,  max(abs_v-1.f,0.8f),		1);//cyan
+			if( abs_v >= 2.0f )	glColor3f(   0,   1, 1-max(abs_v-2.f,0.f)    );//green
+			if( abs_v >= 3.0f )	glColor3f(  max(abs_v-3.f,0.f),    1,      0 );//yellow
+			if( abs_v >= 4.0f )	glColor3f(   1, 1-max(abs_v-4.f,0.f),   0 );//red
 			//if( abs_v >= 5.0f )	glColor4f(   1-max(abs_v-5.f,0.f), 0,   0, 0.15f);//red
-			if( abs_v >= 5.0f )	glColor4f(   1.0,				   0,   0, 0.35f);//red*/
+			if( abs_v >= 5.0f )	glColor3f(   1.0,				   0,   0 );//red*/
 
 			abs_v += 1.25f;
 			abs_v /= 1.20f;
@@ -796,7 +818,7 @@ void display(void)
 			if((view_type==1)&&(n_filled_cells>0)) 
 			{
 				//printf("%d",n_filled_cells);
-				glColor4f(   0,  0.8f,	1, 0.35f);//blue
+				glColor3f(   0,  0.8f,	1);//blue
 			//	if( abs_v <  0.2f )	glColor4f(   0,  0.8f,					1, 0.35f);//blue
 			//	else glColor4f( min(abs_v-0.2f,1.f),  max(0.8f - (abs_v-0.2f)/2.f,0),		1, 0.35f);
 				/*if( abs_v <  1.0f )	glColor4f(   0,  1.f,					1, 0.35f);//blue
@@ -806,10 +828,10 @@ void display(void)
 				//switched off 2021
 				/**/
 				glBegin(GL_QUADS);
-				glVertex3d(  0.4, (((float)(j  ))*h/5.f-localConfig->ymax/2)*sc, (((float)(i  ))*h/5.f-localConfig->zmax/2)*sc );
-				glVertex3d(  0.4, (((float)(j  ))*h/5.f-localConfig->ymax/2)*sc, (((float)(i+1))*h/5.f-localConfig->zmax/2)*sc );
-				glVertex3d(  0.4, (((float)(j+1))*h/5.f-localConfig->ymax/2)*sc, (((float)(i+1))*h/5.f-localConfig->zmax/2)*sc );
-				glVertex3d(  0.4, (((float)(j+1))*h/5.f-localConfig->ymax/2)*sc, (((float)(i  ))*h/5.f-localConfig->zmax/2)*sc ); 
+				glVertex3d(  0.9, (((float)(j  ))*h/5.f-localConfig->ymax/2)*sc, (((float)(i  ))*h/5.f-localConfig->zmax/2)*sc );
+				glVertex3d(  0.9, (((float)(j  ))*h/5.f-localConfig->ymax/2)*sc, (((float)(i+1))*h/5.f-localConfig->zmax/2)*sc );
+				glVertex3d(  0.9, (((float)(j+1))*h/5.f-localConfig->ymax/2)*sc, (((float)(i+1))*h/5.f-localConfig->zmax/2)*sc );
+				glVertex3d(  0.9, (((float)(j+1))*h/5.f-localConfig->ymax/2)*sc, (((float)(i  ))*h/5.f-localConfig->zmax/2)*sc ); 
 				glEnd();
 				/**/
 			}
@@ -835,7 +857,8 @@ void display(void)
 		if((t_ms>=30)&&(t_ms<50)) el_activity = 0 + (t_ms-30) / 20.f;
 		if((t_ms>=50)&&(t_ms<55)) el_activity = 1.f;
 		if((t_ms>=55)&&(t_ms<75)) el_activity = 1 - ((t_ms-55) / 20.f);
-
+		
+		if(0==1)
 		if( (t_ms >= 0) && (t_ms < 90.f) )
 		{
 			glColor3ub((GLubyte)(170+20*el_activity),(GLubyte)(170-170*el_activity), (GLubyte)(170+85*el_activity));
@@ -1383,7 +1406,7 @@ void renderInfo(int x, int y)
 																													 numOfElasticP,
 																													 numOfBoundaryP,localConfig->getParticleCount());
 		glColor3b (0, 0, 0);
-		glPrint( 2 , 10 , label, m_font);
+		glPrint( 2 , 10-1 , label, m_font);
 
 		
 		if(load_from_file)
@@ -1391,12 +1414,28 @@ void renderInfo(int x, int y)
 		else
 			sprintf(label,"Selected device: %s, FPS = %.2f, time step: %d", device_full_name+7, fps, fluid_simulation->getIteration());
 		//glColor3f (1.f, 1.f, 1.f);
-		glPrint( 2 , 25 , label, m_font);
+		glPrint( 2 , 25-1 , label, m_font);
 		
-		sprintf(label, "Time: %.3f ms,  motoneuron activity from CNS Model mns-data_49",
+		//sprintf(label, "Time: %.3f ms,  motoneuron activity from CNS Model spk_mns_data_49_with_turning",
+		//sprintf(label, "Time: %.3f ms,  motoneuron activity from CNS Model spk_mns_data_49",
+		//sprintf(label, "Time: %.3f ms,  motoneuron activity from \"surrogate_exper_based_original_26Jan23.m\"",
+		//sprintf(label, "Time: %.3f ms,  motoneuron activity: \"surrogate_exper_rostr_caudal_11Apr23.m\"",
+		//sprintf(label, "Time: %.3f ms,  motoneuron activity: \"init_burst_struggling_24May23.m\"",
+		//sprintf(label, "Time: %.3f ms,  motoneuron activity: \"sur_exper_rostr_caudal_init_multi__26June23.m\"",
+		sprintf(label, "Time: %.3f ms,  motoneuron activity: \"sur_data_one_way_10Feb24_min_RC_propagation.m\"",
+		//sprintf(label, "Time: %.3f ms,  motoneuron activity: \"REVERSED_spk_mns_data_49.m\"",
+		//sprintf(label, "Time: %.3f ms,  motoneuron activity: \"sur_exper_rostr_caudal_init_multi__4June23.m\"",
+		//sprintf(label, "Time: %.3f ms,  activation of muscle segments 25-30",
 			 ((float)fluid_simulation->getIteration())* localConfig->getTimeStep()*1000.f  + 1*25.f - 50.f 
 			/*(((float)fluid_simulation->getIteration())* localConfig->getTimeStep()*1000.f  + 1*25.f - 50.f)/1000.f*/ );//time shift off
+		
+		/*
+		sprintf(label, "Time: %.3f ms,  <--force = %.6f",
+			((float)fluid_simulation->getIteration())* localConfig->getTimeStep()*1000.f  + 1*25.f - 50.f,
+			//-1.f*(((float)(fluid_simulation->getIteration()-6000))/1000.f)*(fluid_simulation->getIteration()>=6000));
+			-1.f*min(7.f,((float)(fluid_simulation->getIteration()-6000))/1000.f)*(fluid_simulation->getIteration()>=6000));*/
 		glPrint(28.53f, 76, label, m_font2);
+		
 
 		float t_ms = ((float)fluid_simulation->getIteration())* localConfig->getTimeStep()*1000.f  + 1*25.f - 50.f;
 /*		
@@ -1410,46 +1449,52 @@ void renderInfo(int x, int y)
 		glLineWidth(5);
 		glColor3b(0,0,0);
 		glBegin(GL_LINES);
-			glVertex2f(1.5f		+1.5f,360+80);
-			glVertex2f(6+3.98f	+1.5f,360+80);
+			glVertex2f(1.5f		+1.5f,360+80+300);
+			glVertex2f(6+3.98f	+1.5f,360+80+300);
 		glEnd();
 
 		//gravity and arrow
 		sprintf(label, "1 mm");
-		glPrint(11	+1.5f, 367+80, label, m_font2);
+		glPrint(11	+1.5f, 367+80+300, label, m_font2);
 
 		glLineWidth(2);
 		glBegin(GL_LINES);
-			glVertex2f(5.5f	+25.f,383+15+35);
-			glVertex2f(5.5f	+25.f,407+15+35);
+			glVertex2f(5.5f	+25.f,383+15+35+300);
+			glVertex2f(5.5f	+25.f,407+15+35+300);
 		glEnd();
 		glLineWidth(1.5);
 		glBegin(GL_LINES);
-			glVertex2f(4.8f	+25.f,395+15+40);
-			glVertex2f(5.5f	+25.f,405+15+40);
+			glVertex2f(4.8f	+25.f,395+15+40+300);
+			glVertex2f(5.5f	+25.f,405+15+40+300);
 		glEnd();
 		glBegin(GL_LINES);
-			glVertex2f(6.2f	+25.f,395+15+40);
-			glVertex2f(5.5f	+25.f,405+15+40);
+			glVertex2f(6.2f	+25.f,395+15+40+300);
+			glVertex2f(5.5f	+25.f,405+15+40+300);
 		glEnd();
 
 		sprintf(label, "g");
-		glPrint(7			+25.f, 367+80, label, m_font2);
+		glPrint(7			+25.f, 367+80+300, label, m_font2);
 
 		glLineWidth(1);
 
 		if(1){
 			i_shift = 0;
 			
-
-			sprintf(label, "  Right muscles activity [1-20]: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f",
+			sprintf(label, "  Right:");
+			glPrint( 0 , 55 , label, m_font3);
+			sprintf(label, "%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f",
 				ma[ 1],ma[ 2],ma[ 3],ma[ 4],ma[ 5],ma[ 6],ma[ 7],ma[ 8],ma[ 9],ma[10],ma[11],ma[12],ma[13],
-				ma[14],ma[15],ma[16],ma[17],ma[18],ma[19],ma[20]);
-			glPrint( 0 , 54 , label, m_font);
-			sprintf(label, "  Left  muscles activity [1-20]: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f",
+				ma[14],ma[15],ma[16],ma[17],ma[18],ma[19],ma[20],ma[21],ma[22],ma[23],ma[24],ma[25],ma[26],ma[27],ma[28],ma[29],ma[30]);
+			glPrint( 7 , 55 , label, m_font3);
+
+			sprintf(label, "  Left:");
+			glPrint( 0 , 40 , label, m_font3);
+			sprintf(label, "%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f",
 				ma[51],ma[52],ma[53],ma[54],ma[55],ma[56],ma[57],ma[58],ma[59],ma[60],ma[61],ma[62],ma[63],
-				ma[64],ma[65],ma[66],ma[67],ma[68],ma[69],ma[70]);
-			glPrint( 0 , 40 , label, m_font);
+				ma[64],ma[65],ma[66],ma[67],ma[68],ma[69],ma[70],ma[71],ma[72],ma[73],ma[74],ma[75],ma[76],ma[77],ma[78],ma[79],ma[80]);
+			glPrint( 7 , 40 , label, m_font3);
+			sprintf(label, "  muscles activity");
+			glPrint( 0 , 70 , label, m_font3);
 
 			y_m = 40;
 		}
@@ -1747,9 +1792,9 @@ void run(int argc, char** argv, const bool with_graphics)
 	if(with_graphics){
 		glutInit(&argc, argv);
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-		glutInitWindowSize(1400, 700);
+		glutInitWindowSize(1400, 1000);
 		glutInitWindowPosition(100, 100);
-		winIdMain = glutCreateWindow("Sibernetic-VT, special edition of the Sibernetic (sibernetic.org) for 3D X. laevis tadpole swimming simulation (c) 2020-2021 Andrey Palyanov");
+		winIdMain = glutCreateWindow("Sibernetic-VT, special edition of the Sibernetic (sibernetic.org) for 3D X. laevis tadpole swimming simulation (c) 2020-2022 Andrey Palyanov");
 		glutIdleFunc (idle);
 		//Init physic Simulation
 		init();

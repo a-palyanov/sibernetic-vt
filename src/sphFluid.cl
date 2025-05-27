@@ -655,7 +655,9 @@ __kernel void pcisph_computeForcesAndInitPressure(
 				accel_viscosityForce += visc_modifier*(sortedVelocity[jd]*not_bp-sortedVelocity[id]) * (hScaled-r_ij) / rho[jd];   // Caculating viscosity forces impact to acceleration
 																												 // formula 2.19 [1]
 
+				//switched of for struggling
 				//mouth (cement gland) adhesion to wall
+				if(0==1)
 				if( (position[ id_source_particle ].w > 2.309f)&&(position[ id_source_particle ].w < 2.311f) )
 				{
 					if( (int)(position[jd_source_particle].w) == BOUNDARY_PARTICLE )
@@ -718,6 +720,13 @@ __kernel void pcisph_computeForcesAndInitPressure(
 		//acceleration_i += (float4)( 0, 0, -9.8f, 0.0f ); //marble test
 
 		acceleration_i += (float4)(  0.f,/*gravity_y*/ -0.35f, 0.0f, 0.f ); // whole tadpole body
+
+		/*
+		if( (iterationCount/100) > 60 )
+		{
+			acceleration_i += (float4)(  0.f, 0.0f, -1.f*(((float)(iterationCount-6000))/1000.f), 0.f );
+			//acceleration_i += (float4)(  0.f, 0.0f, -1.f*min(7.f,((float)(iterationCount-6000))/1000.f), 0.f );
+		}*/
 
 		if( ((int)(100.f*position[ id_source_particle ].w)==232) || ((int)(100.f*position[ id_source_particle ].w)==236) )
 		{
@@ -795,9 +804,10 @@ __kernel void pcisph_computeElasticForces(
 //	float4 proj_v_i_cm_on_r_ij;
 	int jd,jd0;
 	int i,m_n;
-	float muscle_contraction_force_modifier = 1.f;//2.2f;
+//	float muscle_contraction_force_modifier = 1.f;//2.2f;
 	float elasticity_coefficient_modifier = 1.f;
 	float mf;
+	float mus_act_signal;
 	/*
 	if( (sortedPosition[ particleIndexBack[id] ].w > 2.315)&&(position[ particleIndexBack[id] ].w < 2.325))
 	{
@@ -867,6 +877,13 @@ __kernel void pcisph_computeElasticForces(
 					elasticity_coefficient_modifier = 1.f; // notochord
 				}
 
+				if( (position[ id_source_particle ].w > 2.369f)&&(position[ id_source_particle ].w < 2.371f) &&
+				    (position[ jd_source_particle ].w >= 3.f)/*&&(position[ jd_source_particle ].w < 2.371f)*/ )
+				{
+					//printf("F");
+					elasticity_coefficient_modifier = 0.95f; // forceps
+				}
+
 				if( (position[ id_source_particle ].w > 2.339f)&&(position[ id_source_particle ].w < 2.351f) ||
 				    (position[ jd_source_particle ].w > 2.339f)&&(position[ jd_source_particle ].w < 2.351f) )
 				{
@@ -899,22 +916,41 @@ __kernel void pcisph_computeElasticForces(
 					for(i=1;i<=MUSCLE_COUNT;i++)//check all muscles
 					{
 						m_n = (int)(elasticConnectionsData[idx+nc].z); // muscle number
+						//if(m_n==34) printf("[M]");
+
 						if(m_n==i)//contractible spring, = muscle
 						{
+							//if(i==48) printf ("F");
 							//muscle_contraction_force_modifier = 1.f;
 							//second tadpole
-							mf = 1.f;
-							if((m_n==1)||(m_n==51))  mf *= 4.f;
-							if((m_n==2)||(m_n==52))  mf *= 4.f;
-							if((m_n==3)||(m_n==53))  mf *= 2.5f;
-							if((m_n==4)||(m_n==54))  mf *= 2.f;
-							if((m_n==5)||(m_n==55))  mf *= 1.5f;
+							
+							mus_act_signal = muscle_activation_signal[i];
+
+							/*
+							if( ((int)(position[ id_source_particle ].w*1000000)%10 > 0)
+							  &&((int)(position[ jd_source_particle ].w*1000000)%10 > 0) )// == 0.000002f
+							{
+								//printf("[%d]", ((int)(position[ id_source_particle ].w*1000000))%10 );
+								mus_act_signal += 0.3f;
+							}*/
+
+							mf = 1.5f;//1.0
+							if((m_n==1)||(m_n==51))  mf = 4.f;
+							if((m_n==2)||(m_n==52))  mf = 4.f;
+							if((m_n==3)||(m_n==53))  mf = 2.5f;
+							if((m_n==4)||(m_n==54))  mf = 2.f;
+							if((m_n==5)||(m_n==55))  mf = 1.5f;
+
+							mf *= 1.2f;
+
+							//mf *= 1.5f;
+							//if(mf>6) mf = 6.f;
 							/*if((m_n==6)||(m_n==56))  mf *= 1.8f;
 							if((m_n==7)||(m_n==57))  mf *= 1.6f;
 							if((m_n==8)||(m_n==58))  mf *= 1.4f;
 							if((m_n==9)||(m_n==59))  mf *= 1.2f;*/
 							//if((m_n==10)||(m_n==60))  mf *= 2.f;
-
+							//if(m_n==48)  mf *= 1.5f;
 							
 							//if(sortedPosition[id].z > 208.75f) muscle_contraction_force_modifier = 2.f;
 							//if(0==1)
@@ -923,7 +959,7 @@ __kernel void pcisph_computeElasticForces(
 								// 1.4 instead of 1.0 after 1-23 to 1-20 correctoin
 								// mus. contr. force / 2 after reducing belly elasticity
 								//								0.5 (too weak) -> 0.8
-								acceleration[ id ] += -/*new!*/0.6f/*new!15.03.21*/*1.4f*350.f*1.167f*mf*muscle_contraction_force_modifier*(vect_r_ij/r_ij) * 1.0f * 40.f * muscle_activation_signal[i] * (1300.0f + 400.f ) * 1e-13f / mass; 
+								acceleration[ id ] += -/*new!*/0.6f/*new!15.03.21*/*1.4f*350.f*1.167f*mf*(vect_r_ij/r_ij) * 1.0f * 40.f * mus_act_signal * (1300.0f + 400.f ) * 1e-13f / mass; 
 								//acceleration[ id ] += -1.4f*muscle_contraction_force_modifier*(vect_r_ij/r_ij) * 2.0f * 40.f * muscle_activation_signal[i] * (1300.0f + 400.f ) * 1e-13f / mass; 
 								//acceleration[ jd ] -= -(vect_r_ij/r_ij) * 10.f * muscle_activation_signal[i] * (1300.0f + 400.f ) * 1e-13f / mass; // mass was forgotten here
 							}
@@ -1575,6 +1611,32 @@ __kernel void pcisph_integrate(
 	int id_source_particle = PI_SERIAL_ID( particleIndex[id] );
 	if((int)(position[ id_source_particle ].w) == BOUNDARY_PARTICLE)
 	{
+		return;
+	}
+
+	if( (position[ id_source_particle ].w > 2.369) && (position[ id_source_particle ].w < 2.371) )
+	{
+		//printf("[time = %f]",iterationCount*timeStep);
+
+		// forceps movement. first 40 ms. type = 2.37
+		if( ((float)iterationCount*timeStep*1000.f>0.f) && ((float)iterationCount*timeStep*1000.f< /*55.f*/ /*60.f*/ 41.5f) ) // 40 and 45 
+		{
+			if(position[ id_source_particle ].x < (xmin+xmax)/2) position[ id_source_particle ].x += 1.0f*r0/1000.f;//1000.f
+			if(position[ id_source_particle ].x > (xmin+xmax)/2) position[ id_source_particle ].x -= 1.0f*r0/1000.f;//1000.f
+
+			if( ((float)iterationCount*timeStep*1000.f>25.f) )
+			{
+			if(position[ id_source_particle ].x < (xmin+xmax)/2) position[ id_source_particle ].x += 0.20f*r0/1000.f;//1000.f
+			if(position[ id_source_particle ].x > (xmin+xmax)/2) position[ id_source_particle ].x -= 0.20f*r0/1000.f;//1000.f
+			}
+
+		//	if(position[ id_source_particle ].y < (ymin+ymax)/2) position[ id_source_particle ].y += r0/100.f;
+		//	if(position[ id_source_particle ].y > (ymin+ymax)/2) position[ id_source_particle ].y -= r0/100.f;
+
+		//	if(position[ id_source_particle ].z < (zmin+zmax)/2) position[ id_source_particle ].z += r0/100.f;
+		//	if(position[ id_source_particle ].z > (zmin+zmax)/2) position[ id_source_particle ].z -= r0/100.f;
+		}
+
 		return;
 	}
 	//float4 acceleration_t    = acceleration[ PARTICLE_COUNT*2+id_source_particle ];    acceleration_t.w    = 0.f;

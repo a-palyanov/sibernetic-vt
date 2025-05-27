@@ -178,7 +178,7 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 		
 		for(x= -r0s*2.f*sqrt2d3*11  + config->xmax/2.f,xcnt=0; x<config->xmax/2.f + r0s*2.f*sqrt2d3*11 + 0.001f; x+=r0s*2.f*sqrt2d3, xcnt++)	
 		{
-			for(y=config->ymax*0.475f,ycnt=0;y<config->ymax*0.98f-1.4f*r0;y+=r0s*sqrt3,ycnt++)//ok
+			for(y= config->ymax*0.475f,ycnt=0;y<config->ymax*0.98f-1.4f*r0;y+=r0s*sqrt3,ycnt++)//ok
 			{
 				for(z= config->zmax*0.6f*125.f/(125.f+35.f+10.f)+(r0s)*(ycnt%2==1)+(r0s*2.f/sqrt3)*(xcnt%2==1),zcnt=0;z<config->zmax*1.0f*125.f/(125.f+35.f+10.f) - 1.0f*r0;z+=2*r0s,zcnt++) //ok				
 				{
@@ -213,6 +213,8 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 					if( (ycnt==26)&&(zcnt>= 22)&&(zcnt<= 87+5) ) within_body_shell=1;
 					if( (ycnt==27)&&(zcnt>= 42-15)&&(zcnt<= 79+8) ) within_body_shell=1;
 					if( (ycnt==28)&&(zcnt>= 42-2)&&(zcnt<= 79+2) ) within_body_shell=1;
+
+					//if( (xcnt>=-10)&&(xcnt<=-5)&&(ycnt==18)&&(zcnt>= -100)&&(zcnt<= 10) ) within_body_shell=1;
 					
 					if((xcnt>=11/*10*/)&&(xcnt<=11/*12*/))
 					{
@@ -231,6 +233,12 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 						if( (xx-11)*(xx-11)*0.67f*1.0 + (yy-13)*(yy-13)      + (z-267)*(z-267)*0.4f  < 52 ) within_body_shell=1;//head (low)
 						if( (xx-11)*(xx-11)*0.69f*1.0 + (yy-16)*(yy-16)      + (z-269)*(z-269)*0.4f  < 52 ) within_body_shell=1;//head-neck
 						if( (xx-11)*(xx-11)*1.10f*1.0 + (yy-16)*(yy-16)      + (z-273)*(z-273)*0.4f  < 52 ) within_body_shell=1;//head-neck
+						
+						if( ((xcnt==10)||(xcnt==12))&&((ycnt>=15)&&(ycnt<=19))&&((zcnt>=87)&&(zcnt<=95)) ) within_body_shell=1;//correct tail muscles
+						if( ((xcnt== 9)||(xcnt==13))&&((ycnt>=15)&&(ycnt<=19))&&((zcnt>=85)&&(zcnt<=95)) ) within_body_shell=1;//correct tail muscles
+						if( ((xcnt== 9)||(xcnt==13))&&((ycnt>=16)&&(ycnt<=18))&&((zcnt>=85)&&(zcnt<=96)) ) within_body_shell=1;//correct tail muscles
+						if( ((xcnt== 9)||(xcnt==13))&&((ycnt==17)            )&&((zcnt>=85)&&(zcnt<=97)) ) within_body_shell=1;//correct tail muscles
+
 						if( (xx-11)*(xx-11)*1.40f*1.5 + (yy- 9)*(yy- 9)*4    + (z-261)*(z-261)*2.0f  < 52 ) within_body_shell=1;//mouth
 						
 						if(yy<14)
@@ -313,6 +321,9 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 									if( (xx-11)*(xx-11)*3.00f + (yy-17)*(yy-17)*1.4f + (z-257)*(z-257)*0.0022f < 52 ) within_body_shell=2;//front part of muscles4
 									if( (xx-11)*(xx-11)*2.70f + (yy-19)*(yy-19)*1.4f + (z-243)*(z-243)*0.0025f < 52 ) within_body_shell=2;//front part of muscles4
 								}
+
+								if( ((xcnt==10)||(xcnt==12))&&((ycnt>=15)&&(ycnt<=19))&&((zcnt>=87)&&(zcnt<=95)) ) within_body_shell=2;//correct tail muscles
+								if( ((xcnt== 9)||(xcnt==13))&&((ycnt>=15)&&(ycnt<=19))&&((zcnt>=85)&&(zcnt<=95)) ) within_body_shell=2;//correct tail muscles
 							}
 						}
 
@@ -330,7 +341,7 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 								if((ycnt==13)&&(zcnt==97)) within_body_shell=4;
 								if((ycnt==12)&&(zcnt==98)) within_body_shell=4;
 
-								if((ycnt==19)&&(zcnt==96-9*1)) within_body_shell=4;
+								if((ycnt==19)&&(zcnt==96-9*1)) within_body_shell=5;//upper fin
 								if((ycnt==20)&&(zcnt==97-9*1)) within_body_shell=4;
 								if((ycnt==21)&&(zcnt==97-9*1)) within_body_shell=4;
 								if((ycnt==22)&&(zcnt==98-9*1)) within_body_shell=4;
@@ -338,7 +349,7 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 								if((ycnt==24)&&(zcnt==99-9*1)) within_body_shell=4;
 								if((ycnt==25)&&(zcnt==99-9*1)) within_body_shell=4;
 								///////////////
-								if((ycnt==15)&&(zcnt==96-9*1)) within_body_shell=4;
+								if((ycnt==15)&&(zcnt==96-9*1)) within_body_shell=5;//lower fin
 								if((ycnt==14)&&(zcnt==97-9*1)) within_body_shell=4;
 								if((ycnt==13)&&(zcnt==97-9*1)) within_body_shell=4;
 								if((ycnt==12)&&(zcnt==98-9*1)) within_body_shell=4;
@@ -346,8 +357,8 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 								if((ycnt==10)&&(zcnt==99-9*1)) within_body_shell=4;
 								//if((ycnt== 9)&&(zcnt==99-9*1)) within_body_shell=2;
 
-								if((ycnt==19)&&(zcnt==96-9*2)) within_body_shell=4;
-								if((ycnt==20)&&(zcnt==97-9*2)) within_body_shell=4;
+								if((ycnt==19)&&(zcnt==96-9*2)) within_body_shell=5;//upper fin
+								if((ycnt==20)&&(zcnt==97-9*2)) within_body_shell=5;//ok
 								if((ycnt==21)&&(zcnt==97-9*2)) within_body_shell=4;
 								if((ycnt==22)&&(zcnt==98-9*2)) within_body_shell=4;
 								if((ycnt==23)&&(zcnt==98-9*2)) within_body_shell=4;
@@ -355,7 +366,7 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 								if((ycnt==25)&&(zcnt==99-9*2)) within_body_shell=4;
 								if((ycnt==26)&&(zcnt==100-9*2)) within_body_shell=4;
 								///////////////
-								if((ycnt==15)&&(zcnt==96-9*2)) within_body_shell=4;
+								if((ycnt==15)&&(zcnt==96-9*2)) within_body_shell=5;//lower fin
 								if((ycnt==14)&&(zcnt==97-9*2)) within_body_shell=4;
 								if((ycnt==13)&&(zcnt==97-9*2)) within_body_shell=4;
 								if((ycnt==12)&&(zcnt==98-9*2)) within_body_shell=4;
@@ -364,18 +375,18 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 								if((ycnt== 9)&&(zcnt==99-9*2)) within_body_shell=4;
 								if((ycnt== 8)&&(zcnt==100-9*2)) within_body_shell=4;
 
-								if((ycnt==19)&&(zcnt==96-9*3)) within_body_shell=4;
-								if((ycnt==20)&&(zcnt==97-9*3)) within_body_shell=4;
-								if((ycnt==21)&&(zcnt==97-9*3)) within_body_shell=4;
-								if((ycnt==22)&&(zcnt==98-9*3)) within_body_shell=4;
+								if((ycnt==19)&&(zcnt==96-9*3)) within_body_shell=5;//upper fin
+								if((ycnt==20)&&(zcnt==97-9*3)) within_body_shell=5;
+								if((ycnt==21)&&(zcnt==97-9*3)) within_body_shell=5;
+								if((ycnt==22)&&(zcnt==98-9*3)) within_body_shell=5;//ok
 								if((ycnt==23)&&(zcnt==98-9*3)) within_body_shell=4;
 								if((ycnt==24)&&(zcnt==99-9*3)) within_body_shell=4;
 								if((ycnt==25)&&(zcnt==99-9*3)) within_body_shell=4;
 								if((ycnt==26)&&(zcnt==100-9*3)) within_body_shell=4;
 								if((ycnt==27)&&(zcnt==100-9*3)) within_body_shell=4;
 								///////////////
-								if((ycnt==15)&&(zcnt==96-9*3)) within_body_shell=4;
-								if((ycnt==14)&&(zcnt==97-9*3)) within_body_shell=4;
+								if((ycnt==15)&&(zcnt==96-9*3)) within_body_shell=5;//lower fin
+								if((ycnt==14)&&(zcnt==97-9*3)) within_body_shell=5;//ok
 								if((ycnt==13)&&(zcnt==97-9*3)) within_body_shell=4;
 								if((ycnt==12)&&(zcnt==98-9*3)) within_body_shell=4;
 								if((ycnt==11)&&(zcnt==98-9*3)) within_body_shell=4;
@@ -383,54 +394,54 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 								if((ycnt== 9)&&(zcnt==99-9*3)) within_body_shell=4;
 								if((ycnt== 8)&&(zcnt==100-9*3)) within_body_shell=4;
 
-								if((ycnt==19)&&(zcnt==96-9*4)) within_body_shell=4;
-								if((ycnt==20)&&(zcnt==97-9*4)) within_body_shell=4;
-								if((ycnt==21)&&(zcnt==97-9*4)) within_body_shell=4;
-								if((ycnt==22)&&(zcnt==98-9*4)) within_body_shell=4;
+								if((ycnt==19)&&(zcnt==96-9*4)) within_body_shell=5;//upper fin
+								if((ycnt==20)&&(zcnt==97-9*4)) within_body_shell=5;
+								if((ycnt==21)&&(zcnt==97-9*4)) within_body_shell=5;
+								if((ycnt==22)&&(zcnt==98-9*4)) within_body_shell=5;//ok
 								if((ycnt==23)&&(zcnt==98-9*4)) within_body_shell=4;
 								if((ycnt==24)&&(zcnt==99-9*4)) within_body_shell=4;
 								if((ycnt==25)&&(zcnt==99-9*4)) within_body_shell=4;
 								if((ycnt==26)&&(zcnt==100-9*4)) within_body_shell=4;
 								if((ycnt==27)&&(zcnt==100-9*4)) within_body_shell=4;
 								///////////////
-								if((ycnt==15)&&(zcnt==96-9*4)) within_body_shell=4;
-								if((ycnt==14)&&(zcnt==97-9*4)) within_body_shell=4;
-								if((ycnt==13)&&(zcnt==97-9*4)) within_body_shell=4;
-								if((ycnt==12)&&(zcnt==98-9*4)) within_body_shell=4;
-								if((ycnt==11)&&(zcnt==98-9*4)) within_body_shell=4;
-								if((ycnt==10)&&(zcnt==99-9*4)) within_body_shell=4;
+								if((ycnt==15)&&(zcnt==96-9*4)) within_body_shell=5;//lower fin
+								if((ycnt==14)&&(zcnt==97-9*4)) within_body_shell=5;
+								if((ycnt==13)&&(zcnt==97-9*4)) within_body_shell=5;
+								if((ycnt==12)&&(zcnt==98-9*4)) within_body_shell=5;
+								if((ycnt==11)&&(zcnt==98-9*4)) within_body_shell=5;
+								if((ycnt==10)&&(zcnt==99-9*4)) within_body_shell=5;//ok
 								if((ycnt== 9)&&(zcnt==99-9*4)) within_body_shell=4;
 								if((ycnt== 8)&&(zcnt==100-9*4)) within_body_shell=4;
 								if((ycnt== 7)&&(zcnt==100-9*4)) within_body_shell=4;
 								if((ycnt== 6)&&(zcnt==101-9*4)) within_body_shell=4;
 								//if((ycnt== 5)&&(zcnt==101-9*4)) within_body_shell=2;
 
-								if((ycnt==19)&&(zcnt==96-9*5)) within_body_shell=4;
-								if((ycnt==20)&&(zcnt==97-9*5)) within_body_shell=4;
-								if((ycnt==21)&&(zcnt==97-9*5)) within_body_shell=4;
-								if((ycnt==22)&&(zcnt==98-9*5)) within_body_shell=4;
-								if((ycnt==23)&&(zcnt==98-9*5)) within_body_shell=4;
+								if((ycnt==19)&&(zcnt==96-9*5)) within_body_shell=5;//upper fin
+								if((ycnt==20)&&(zcnt==97-9*5)) within_body_shell=5;
+								if((ycnt==21)&&(zcnt==97-9*5)) within_body_shell=5;
+								if((ycnt==22)&&(zcnt==98-9*5)) within_body_shell=5;
+								if((ycnt==23)&&(zcnt==98-9*5)) within_body_shell=5;//ok
 								if((ycnt==24)&&(zcnt==99-9*5)) within_body_shell=4;
 								if((ycnt==25)&&(zcnt==99-9*5)) within_body_shell=4;
 								if((ycnt==26)&&(zcnt==100-9*5)) within_body_shell=4;
 								if((ycnt==27)&&(zcnt==100-9*5)) within_body_shell=4;
 
-								if((ycnt==19)&&(zcnt==96-9*6)) within_body_shell=4;
-								if((ycnt==20)&&(zcnt==97-9*6)) within_body_shell=4;
-								if((ycnt==21)&&(zcnt==97-9*6)) within_body_shell=4;
-								if((ycnt==22)&&(zcnt==98-9*6)) within_body_shell=4;
-								if((ycnt==23)&&(zcnt==98-9*6)) within_body_shell=4;
+								if((ycnt==19)&&(zcnt==96-9*6)) within_body_shell=5;
+								if((ycnt==20)&&(zcnt==97-9*6)) within_body_shell=5;//ok
+								if((ycnt==21)&&(zcnt==97-9*6)) within_body_shell=5;
+								if((ycnt==22)&&(zcnt==98-9*6)) within_body_shell=5;
+								if((ycnt==23)&&(zcnt==98-9*6)) within_body_shell=5;
 								if((ycnt==24)&&(zcnt==99-9*6)) within_body_shell=4;
 								if((ycnt==25)&&(zcnt==99-9*6)) within_body_shell=4;
 								if((ycnt==26)&&(zcnt==100-9*6)) within_body_shell=4;
 								if((ycnt==27)&&(zcnt==100-9*6)) within_body_shell=4;
 
-								if((ycnt==24)&&(zcnt==99-9*7)) within_body_shell=4;
+								if((ycnt==24)&&(zcnt==99-9*7)) within_body_shell=5;//ok
 								if((ycnt==25)&&(zcnt==99-9*7)) within_body_shell=4;
 								if((ycnt==26)&&(zcnt==100-9*7)) within_body_shell=4;
 								if((ycnt==27)&&(zcnt==100-9*7)) within_body_shell=4;
 
-								if((ycnt==24)&&(zcnt==99-9*8)) within_body_shell=4;
+								if((ycnt==24)&&(zcnt==99-9*8)) within_body_shell=5;//ok
 								if((ycnt==25)&&(zcnt==99-9*8)) within_body_shell=4;
 								if((ycnt==26)&&(zcnt==100-9*8)) within_body_shell=4;
 								if((ycnt==27)&&(zcnt==100-9*8)) within_body_shell=4;
@@ -749,24 +760,76 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 										((ycnt==17)&&(zcnt>=70+2*5-1)&&(zcnt<=71+2*5-1)) ||
 										((ycnt==16)&&(zcnt>=71+2*5-1)&&(zcnt<=72+2*5-1)) ||
 										((ycnt==15)&&(zcnt>=71+2*5-1)&&(zcnt<=72+2*5-1))  ) positionVector[ 3 ] += 0.00025f; 
-
+									
 									if( ((ycnt==19)&&(zcnt>=71+2*6-1)&&(zcnt<=72+2*6-1)) ||
 										((ycnt==18)&&(zcnt>=71+2*6-1)&&(zcnt<=72+2*6-1)) ||
 										((ycnt==17)&&(zcnt>=70+2*6-1)&&(zcnt<=71+2*6-1)) ||
 										((ycnt==16)&&(zcnt>=71+2*6-1)&&(zcnt<=72+2*6-1)) ||
-										((ycnt==15)&&(zcnt>=71+2*6-1)&&(zcnt<=72+2*6-1))  ) positionVector[ 3 ] += 0.00026f; 
+										((ycnt==15)&&(zcnt>=71+2*6-1)&&(zcnt<=72+2*6-1))  ) 
+									{
+										//FILE *fout = fopen("mus26_coords.txt","a+");
+										positionVector[ 3 ] += 0.00026f; 
+										//fprintf(fout,"%d\t%d\t%d\n",xcnt,ycnt,zcnt);
+										//fclose(fout);
+									}
 										
-									if( ((ycnt==19)&&(zcnt>=71+2*7-1)&&(zcnt<=72+2*15-1)) ||
-										((ycnt==18)&&(zcnt>=71+2*7-1)&&(zcnt<=72+2*15-1)) ||
-										((ycnt==17)&&(zcnt>=70+2*7-1)&&(zcnt<=71+2*15-1)) ||
-										((ycnt==16)&&(zcnt>=71+2*7-1)&&(zcnt<=72+2*15-1)) ||
-										((ycnt==15)&&(zcnt>=71+2*7-1)&&(zcnt<=72+2*15-1))  ) positionVector[ 3 ] += 0.00027f; 
+									if( ((ycnt==19)&&(zcnt>=71+2*7-1)&&(zcnt<=72+2*7-1)) ||
+										((ycnt==18)&&(zcnt>=71+2*7-1)&&(zcnt<=72+2*7-1)) ||
+										((ycnt==17)&&(zcnt>=70+2*7-1)&&(zcnt<=71+2*7-1)) ||
+										((ycnt==16)&&(zcnt>=71+2*7-1)&&(zcnt<=72+2*7-1)) ||
+										((ycnt==15)&&(zcnt>=71+2*7-1)&&(zcnt<=72+2*7-1))  ) 
+										{
+											positionVector[ 3 ] += 0.00027f; 
+										}
+
+									if( ((ycnt==19)&&(zcnt>=71+2*8-1)&&(zcnt<=72+2*8-1)) ||
+										((ycnt==18)&&(zcnt>=71+2*8-1)&&(zcnt<=72+2*8-1)) ||
+										((ycnt==17)&&(zcnt>=70+2*8-1)&&(zcnt<=71+2*8-1)) ||
+										((ycnt==16)&&(zcnt>=71+2*8-1)&&(zcnt<=72+2*8-1)) ||
+										((ycnt==15)&&(zcnt>=71+2*8-1)&&(zcnt<=72+2*8-1))  ) positionVector[ 3 ] += 0.00028f; 
+
+									if( ((ycnt==19)&&(zcnt>=71+2*9-1)&&(zcnt<=72+2*9-1)) ||
+										((ycnt==18)&&(zcnt>=71+2*9-1)&&(zcnt<=72+2*9-1)) ||
+										((ycnt==17)&&(zcnt>=70+2*9-1)&&(zcnt<=71+2*9-1)) ||
+										((ycnt==16)&&(zcnt>=71+2*9-1)&&(zcnt<=72+2*9-1)) ||
+										((ycnt==15)&&(zcnt>=71+2*9-1)&&(zcnt<=72+2*9-1))  ) positionVector[ 3 ] += 0.00029f; 
+
+									if( ((ycnt==19)&&(zcnt>=71+2*10-1)&&(zcnt<=72+2*10-1)) ||
+										((ycnt==18)&&(zcnt>=71+2*10-1)&&(zcnt<=72+2*10-1)) ||
+										((ycnt==17)&&(zcnt>=70+2*10-1)&&(zcnt<=71+2*10-1)) ||
+										((ycnt==16)&&(zcnt>=71+2*10-1)&&(zcnt<=72+2*10-1)) ||
+										((ycnt==15)&&(zcnt>=71+2*10-1)&&(zcnt<=72+2*10-1))  ) positionVector[ 3 ] += 0.00030f; 
+
+									if( ((ycnt==19)&&(zcnt>=71+2*11-1)&&(zcnt<=72+2*11-1)) ||
+										((ycnt==18)&&(zcnt>=71+2*11-1)&&(zcnt<=72+2*11-1)) ||
+										((ycnt==17)&&(zcnt>=70+2*11-1)&&(zcnt<=71+2*11-1)) ||
+										((ycnt==16)&&(zcnt>=71+2*11-1)&&(zcnt<=72+2*11-1)) ||
+										((ycnt==15)&&(zcnt>=71+2*11-1)&&(zcnt<=72+2*11-1))  ) positionVector[ 3 ] += 0.00031f; 
+
+									if( ((ycnt==19)&&(zcnt>=71+2*12-1)&&(zcnt<=72+2*12-1)) ||
+										((ycnt==18)&&(zcnt>=71+2*12-1)&&(zcnt<=72+2*12-1)) ||
+										((ycnt==17)&&(zcnt>=70+2*12-1)&&(zcnt<=71+2*12-1)) ||
+										((ycnt==16)&&(zcnt>=71+2*12-1)&&(zcnt<=72+2*12-1)) ||
+										((ycnt==15)&&(zcnt>=71+2*12-1)&&(zcnt<=72+2*12-1))  ) positionVector[ 3 ] += 0.00032f; 
+
+									if( ((ycnt==19)&&(zcnt>=71+2*13-1)&&(zcnt<=72+2*13-1)) ||
+										((ycnt==18)&&(zcnt>=71+2*13-1)&&(zcnt<=72+2*13-1)) ||
+										((ycnt==17)&&(zcnt>=70+2*13-1)&&(zcnt<=71+2*13-1)) ||
+										((ycnt==16)&&(zcnt>=71+2*13-1)&&(zcnt<=72+2*13-1)) ||
+										((ycnt==15)&&(zcnt>=71+2*13-1)&&(zcnt<=72+2*13-1))  ) positionVector[ 3 ] += 0.00033f; 
+
+									if( ((ycnt==19)&&(zcnt>=71+2*14-1)&&(zcnt<=72+2*14-1)) ||
+										((ycnt==18)&&(zcnt>=71+2*14-1)&&(zcnt<=72+2*14-1)) ||
+										((ycnt==17)&&(zcnt>=70+2*14-1)&&(zcnt<=71+2*14-1)) ||
+										((ycnt==16)&&(zcnt>=71+2*14-1)&&(zcnt<=72+2*14-1)) ||
+										((ycnt==15)&&(zcnt>=71+2*14-1)&&(zcnt<=72+2*14-1))  ) positionVector[ 3 ] += 0.00034f; 
 									}//////////////////////////////////////////////////////////////////////
 
 
 									if( ((int)(positionVector[ 3 ]*100000))%100 > 0)
 									{
 										if(xcnt>11) positionVector[ 3 ] += 0.00050f; // left / right
+										if(ycnt>=16) positionVector[ 3 ] += 0.000003f; // upper 'subsegments' of muscles
 									}
 								}
 
@@ -850,14 +913,16 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 								*/
 								//positionVector[ 2 ] -= 200;
 
+								//move the tadpole
+
 								//positionVector[ 0 ] += -10;
-								positionVector[ 1 ] -= 18 + 18; // at the bottom
+								positionVector[ 1 ] -= 18 + 18 - 10 + 5/*15*/; // at the bottom
 								positionVector[ 2 ] -= 1;
 								//positionVector[ 2 ] -= 51.5;
 
 								//flip the tadpole
 								
-								positionVector[ 2 ] = -positionVector[ 2 ] + 417+1;// + 20;// + 350;
+								positionVector[ 2 ] = -positionVector[ 2 ] + 417+1+200;// + 20;// + 350;
 								positionVector[ 1 ] -= /*-(23-8)-30;*/  23-8;//-10;
 
 								/*
@@ -936,6 +1001,67 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 			}
 		}
 
+		xcnt = ycnt = zcnt = 0;
+		y = config->ymax/2.f;
+		x = config->xmax/2.f;
+		z = config->zmax/2.f;	
+
+		
+		for(x= -r0s*2.f*sqrt2d3*20  + config->xmax/2.f,xcnt=0; x<config->xmax/2.f + r0s*2.f*sqrt2d3*20 + 0.001f; x+=r0s*2.f*sqrt2d3, xcnt++)	
+		{
+			for(y= config->ymax*0.475f,ycnt=0;y<config->ymax*0.98f-1.4f*r0;y+=r0s*sqrt3,ycnt++)//ok
+			{
+				for(z= config->zmax*0.6f*125.f/(125.f+35.f+10.f)+(r0s)*(ycnt%2==1)+(r0s*2.f/sqrt3)*(xcnt%2==1),zcnt=0;z<config->zmax*0.178f + config->zmax*1.0f*125.f/(125.f+35.f+10.f) - 1.0f*r0;z+=2*r0s,zcnt++) //ok				
+				{
+					//within_body_shell = -1;
+
+					//forceps geometry
+					//if(0==1)
+					if( ((((xcnt>=35)&&(xcnt<=40))||((xcnt>=0)&&(xcnt<=5)))&&((ycnt>=18-5-10)&&(ycnt<=28) )&&(zcnt>= 20)&&(zcnt<= 200))  ||
+						((((xcnt>=34)&&(xcnt<=36))||((xcnt>=4)&&(xcnt<=6)))&&((ycnt>=18-5-10)&&(ycnt<=28) )&&(zcnt>= 21.5)&&(zcnt<= 22)) ||
+						((((xcnt>=34)&&(xcnt<=36))||((xcnt>=4)&&(xcnt<=6)))&&((ycnt>=18-5-10)&&(ycnt<=28) )&&(zcnt>= 24.5)&&(zcnt<= 25)) ||
+						((((xcnt>=34)&&(xcnt<=36))||((xcnt>=4)&&(xcnt<=6)))&&((ycnt>=18-5-10)&&(ycnt<=28) )&&(zcnt>= 27.5)&&(zcnt<= 28)) ||
+						((((xcnt>=34)&&(xcnt<=36))||((xcnt>=4)&&(xcnt<=6)))&&((ycnt>=18-5-10)&&(ycnt<=28) )&&(zcnt>= 30.5)&&(zcnt<= 31)) ||
+						((((xcnt>=34)&&(xcnt<=36))||((xcnt>=4)&&(xcnt<=6)))&&((ycnt>=18-5-10)&&(ycnt<=28) )&&(zcnt>= 33.5)&&(zcnt<= 34)) ||
+						((((xcnt>=34)&&(xcnt<=36))||((xcnt>=4)&&(xcnt<=6)))&&((ycnt>=18-5-10)&&(ycnt<=28) )&&(zcnt>= 36.5)&&(zcnt<= 37)) ||
+						((((xcnt>=34)&&(xcnt<=36))||((xcnt>=4)&&(xcnt<=6)))&&((ycnt>=18-5-10)&&(ycnt<=28) )&&(zcnt>= 39.5)&&(zcnt<= 40))  
+						//(xcnt>=6)&&(xcnt<=34)&&(ycnt>=18)&&(ycnt<=28)&&(zcnt>= 54)&&(zcnt<= 62)
+						)
+					{
+						if(stage==1)
+						{	
+							positionVector = position_cpp + 4 * (pCount+i_start);
+							positionVector[ 0 ] = x;
+							positionVector[ 1 ] = y-50;
+							positionVector[ 2 ] = z+50;// + (r0s*2.f/sqrt3)*(xcnt%2==1);
+							positionVector[ 3 ] = 2.37;//2.37;//2.5f;// type == 2.5 for muscles, 2.4 - for ordinary elastic matter
+
+							config->tadpole_y_min = min(positionVector[ 1 ], config->tadpole_y_min);
+							config->tadpole_y_max = max(positionVector[ 1 ], config->tadpole_y_max);
+							config->tadpole_z_min = min(positionVector[ 2 ], config->tadpole_z_min);
+							config->tadpole_z_max = max(positionVector[ 2 ], config->tadpole_z_max);
+
+							config->tadpole_color_r[pCount] = (unsigned char) 0;
+							config->tadpole_color_g[pCount] = (unsigned char) 0;
+							config->tadpole_color_b[pCount] = (unsigned char) 0;
+
+							/*
+							if((xcnt>=6)&&(xcnt<=34)&&(ycnt>=18)&&(ycnt<=28)&&(zcnt>= 54)&&(zcnt<= 62)) 
+							{
+								positionVector[ 3 ] += 0.00049f; 
+
+								config->tadpole_color_r[pCount] = (unsigned char) 100;
+								config->tadpole_color_g[pCount] = (unsigned char) 0;
+								config->tadpole_color_b[pCount] = (unsigned char) 0;
+							}*/
+						}
+
+						pCount++;
+					}
+				}
+			}
+		}
+
 	if( !((stage==0)||(stage==1)) ) return 0;
 
 	if(stage==1)
@@ -957,6 +1083,8 @@ int generateTadpoleBody(int stage, int i_start,float *position_cpp, float *veloc
 int generateLiquid(int stage, int i_start,float *position_cpp, float *velocity_cpp, owConfigProperty * config)
 {
 	//add outer liquid 2020
+
+	//return 0;
 
 	int pCount = 0;//particle counter
 	int i;
@@ -1048,7 +1176,13 @@ int generateLiquid(int stage, int i_start,float *position_cpp, float *velocity_c
 	} 
 	else
 	{
-		pCount = 1949112;
+		//fix_pCount
+		//pCount = 1949112;
+		//pCount = 0;
+		//pCount = 3740691 - 41696 + 39925;//4252412;
+		pCount = 3740691 - 41696 + 39925 - 62038 + 35143 + 5922 - 2338 + 34486 - 44694 + 937-486 + 32057 - 52487 + 1606 - 2057+2000 -1606+26
+			- 161 -2365+1623;
+			//+ 60000 - 5629 + 1525;// in case of no forceps
 	}
 /**/ // end of block 
 
@@ -1187,7 +1321,7 @@ void owHelper::generateConfiguration(int stage, float *position_cpp, float *velo
 	}
 
 
-	//=============== create liquid) ==================================================
+	//=============== create liquid ==================================================
 	if(stage==1)
 	{
 		i += generateLiquid(stage,i,position_cpp,velocity_cpp, config);
@@ -1435,7 +1569,7 @@ void owHelper::generateConfiguration(int stage, float *position_cpp, float *velo
 			int q_i_start;
 			int dq;//dorsal quadrant - "+1"=right, "-1"=left
 			float muscle_color = 0.1f;
-			float r0_ = r0*0.5f;;
+			float r0_ = r0*0.5f;
 			ecc = 0;//!important!
 			//        _____1_______      2       _____3________       
 			for(j=0;j<numOfElasticP+numOfLiquidP*0+numOfBoundaryP*1;j++)
@@ -1462,7 +1596,12 @@ void owHelper::generateConfiguration(int stage, float *position_cpp, float *velo
 					int found;
 					int ij_belong_to_midplane = 0;
 					int m_index_i, m_index_j;
-					
+
+					/*
+					if((position_cpp[ 4 * i + 3 ]>2.369)&&(position_cpp[ 4 * i + 3 ]<2.371)&&(position_cpp[ 4 * j + 3 ]>=3.f))
+					{
+						printf("[e-b]");
+					}*/
 
 					if( (fabs(position_cpp[ 4 * i + 0 ] - 73.f + 16.f) < 0.01f) && (fabs(position_cpp[ 4 * j + 0 ] - 73.f + 16.f) < 0.01f) )  
 					{
@@ -1489,17 +1628,40 @@ void owHelper::generateConfiguration(int stage, float *position_cpp, float *velo
 						m_index_j = ((int)((position_cpp[ 4 * j + 3 ]/*+0.000001*/) * 100000))%100;
 
 						//getIteration();
-
+						
 						//muscle mapping 2.2
-						if( (abs(m_index_i-m_index_j)<=1) && (m_index_i>0) && (m_index_j>0) 
-							&& (position_cpp[4*i+0]==position_cpp[4*j+0]) // x
-							&& (position_cpp[4*i+1]==position_cpp[4*j+1]))//y
+						if(m_index_i<99)
 						{
-							m_index_i = max(m_index_i,m_index_j);
-							elasticConnectionsData_cpp[ 4 * ( MAX_NEIGHBOR_COUNT * i + ecc  ) + 2 ] = m_index_i;// + 0*((m_index_i)%2+2)/10.f; //mus_clr[mus_num]/10.f;
+							if( (abs(m_index_i-m_index_j)<=1) && (m_index_i>0) && (m_index_j>0) 
+								&& (position_cpp[4*i+0]==position_cpp[4*j+0]) // x
+								&& (position_cpp[4*i+1]==position_cpp[4*j+1]))//y
+							{
+								m_index_i = max(m_index_i,m_index_j);
+								elasticConnectionsData_cpp[ 4 * ( MAX_NEIGHBOR_COUNT * i + ecc  ) + 2 ] = m_index_i;// + 0*((m_index_i)%2+2)/10.f; //mus_clr[mus_num]/10.f;
+							}
+							/*
+							if((m_index_i==48)&&(m_index_j==48))
+							{
+								printf("[48]");
+							}*/
+
+							if((m_index_i==48)&&(m_index_j==48))
+							{
+								//printf("[48]");
+
+								if( fabs(position_cpp[4*i+0]-position_cpp[4*j+0]) > fabs(position_cpp[4*i+1]-position_cpp[4*j+1]) &&
+									fabs(position_cpp[4*i+0]-position_cpp[4*j+0]) > fabs(position_cpp[4*i+2]-position_cpp[4*j+2]) )
+								
+								{
+									m_index_i = max(m_index_i,m_index_j);
+									elasticConnectionsData_cpp[ 4 * ( MAX_NEIGHBOR_COUNT * i + ecc  ) + 2 ] = m_index_i;// + 0*((m_index_i)%2+2)/10.f; //mus_clr[mus_num]/10.f;
+								}
+							}	
 						}
 
-						
+
+
+					
 
 						//if( ((int)(position_cpp[ 4 * i + 3 ]*10)==25) && ((int)(position_cpp[ 4 * j + 3 ]*10)==25) ) // type == 2.5 for muscles, 2.4 - for ordinary elastic matter
 							/*
@@ -2066,10 +2228,22 @@ void owHelper::loadConfigurationToFile(float * position, float * velocity, float
 		configFile << config->zmax << "\n";
 		configFile << "[position]\n" ;
 		for(int i=0;i < config->getParticleCount(); i++)
-			configFile << position[i * 4 + 0] << "\t" << position[i * 4 + 1] << "\t" << position[i * 4 + 2] << "\t" << position[i * 4 + 3] << "\n";
+		{
+			if( ((position[i*4+3]>2.329)&&(position[i*4+3]<2.331)) ) //notochord
+			{
+				configFile << position[i * 4 + 0] << "\t" << position[i * 4 + 1] << "\t" << position[i * 4 + 2] << "\t" << position[i * 4 + 3] << "\n";
+			}
+		}
 		configFile << "[velocity]\n" ;
 		for(int i=0;i < config->getParticleCount(); i++)
-			configFile << velocity[i * 4 + 0] << "\t" << velocity[i * 4 + 1] << "\t" << velocity[i * 4 + 2] << "\t" << velocity[i * 4 + 3] << "\n";
+		{
+			if( ((position[i*4+3]>2.329)&&(position[i*4+3]<2.331)) ) //notochord
+			{
+				configFile << velocity[i * 4 + 0] << "\t" << velocity[i * 4 + 1] << "\t" << velocity[i * 4 + 2] << "\t" << velocity[i * 4 + 3] << "\n";
+			}
+		}
+
+		/*
 		configFile << "[connection]\n" ;
 		int con_num = MAX_NEIGHBOR_COUNT * numOfElasticP;
 		for(int i = 0; i < con_num; i++)
@@ -2081,6 +2255,7 @@ void owHelper::loadConfigurationToFile(float * position, float * velocity, float
 		int particleMemIndexCount = numOfElasticP*MAX_MEMBRANES_INCLUDING_SAME_PARTICLE;
 		for(int i = 0; i < particleMemIndexCount; i++)
 			configFile << particleMemIndex[i] << "\n";
+			*/
 		configFile << "[end]";
 		configFile.close();
 	}catch(std::exception &e){
